@@ -3,6 +3,7 @@ import os
 from PIL import Image
 import csv
 import numpy as np
+
 #import torch
 
 
@@ -43,6 +44,20 @@ def load_labels(image_dir,gt_dir,pred_dir):
  
     return pred_df, gt_df
 
+
+def get_bboxes_from_df(df):
+    """
+    Gets the bboxes out of the dataframe as numpy_array of shape(N,4), being N the number of rows
+
+    Args:
+        df: Dataframe with following columns: 'filename','class','xmin','ymin','xmax','ymax', and in the pred_df also 'conf'
+
+    Returns:
+        np.array: Of dimensions NxM, containing the IoU
+    """
+
+    array = df[['xmin','ymin','xmax','ymax']].to_numpy()
+    return array
 
 
 
