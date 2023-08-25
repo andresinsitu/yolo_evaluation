@@ -82,33 +82,43 @@ def list_from_text(path_to_file,w,h):
     makes df out of the label txt, also add filename and transforms coordinates
     then it returns that df in list format, so it can be appended
     """
-    try:
-        l = np.loadtxt(path_to_file)
-        #print(f'shape in {l.shape}')
-        if len(l.shape) == 1:
-            l = l.reshape(1,-1)
-        #print(f'reshape in {l.shape}')
-        dw = l[:,3] / 2  # half-width
-        dh = l[:,4] / 2  # half-height
-        z = np.empty_like(l)
-        z[:,0] = l[:,0].astype(int)
-        z[:,1] = (l[:,1] - dw)*w
-        z[:,2] = (l[:,2] - dh)*h
-        z[:,3] = (l[:,1] + dw)*w
-        z[:,4] = (l[:,2] + dh)*h
-        if len(l[0]) == 6: # only predicted labels(with confidence) has len 6
-            z[:,5] = l[:,5]
+    # try:
 
-        df = pd.DataFrame(z)
-
-        filename= get_filename(path_to_file) #gets filename without extension
-
-        df.insert(0,'filename',[filename for i in range(z.shape[0]) ])
-        list_df = df.values.tolist()
-
-    except:
-        print('EXCEPTION')
+    if not os.path.exists(path_to_file):
         list_df = None
+
+    else:
+        l = np.loadtxt(path_to_file)
+
+        if not l.shape[0]:
+            list_df = None
+
+        else:
+        #print(f'shape in {l.shape}')
+            if len(l.shape) == 1:
+                l = l.reshape(1,-1)
+            #print(f'reshape in {l.shape}')
+            dw = l[:,3] / 2  # half-width
+            dh = l[:,4] / 2  # half-height
+            z = np.empty_like(l)
+            z[:,0] = l[:,0].astype(int)
+            z[:,1] = (l[:,1] - dw)*w
+            z[:,2] = (l[:,2] - dh)*h
+            z[:,3] = (l[:,1] + dw)*w
+            z[:,4] = (l[:,2] + dh)*h
+            if len(l[0]) == 6: # only predicted labels(with confidence) has len 6
+                z[:,5] = l[:,5]
+
+            df = pd.DataFrame(z)
+
+            filename= get_filename(path_to_file) #gets filename without extension
+
+            df.insert(0,'filename',[filename for i in range(z.shape[0]) ])
+            list_df = df.values.tolist()
+
+        # except:
+        #    print('EXCEPTION')
+        #    list_df = None
     return list_df
 
 
