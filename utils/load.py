@@ -102,7 +102,7 @@ def list_from_text(path_to_file,w,h):
             dh = l[:,4] / 2  # half-height
             z = np.empty_like(l)
             z[:,0] = l[:,0].astype(int)
-            z[:,1] = (l[:,1] - dw)*w
+            z[:,1] = (l[:,1] - dw)*w #calculate coordinates from xywhn to xyxy
             z[:,2] = (l[:,2] - dh)*h
             z[:,3] = (l[:,1] + dw)*w
             z[:,4] = (l[:,2] + dh)*h
