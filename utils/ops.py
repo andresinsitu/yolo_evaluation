@@ -36,10 +36,10 @@ def match_predictions(pred_classes, true_classes, iou):
     Args:
         pred_classes (np.array): Predicted class indices of shape(N,).
         true_classes (np.array): Target class indices of shape(M,).
-        iou (torch.Tensor): An NxM tensor containing the pairwise IoU values for predictions and ground of truth
+        iou (np.array): An NxM array containing the pairwise IoU values for predictions and ground of truth
 
     Returns:
-        (torch.Tensor): Correct tensor of shape(N,10) for 10 IoU thresholds.
+        (np.array): Correct array of shape(N,10) for 10 IoU thresholds.
     """
 
     iout = np.linspace(0.5,0.95,10) #thresholds
