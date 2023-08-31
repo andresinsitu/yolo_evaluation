@@ -136,6 +136,16 @@ def list_from_text(path_to_file,w,h):
         #    list_df = None
     return list_df
 
+def get_class_indices(df):
+    """
+    Gets class indices from the dataframe and stores it in an int vector
 
+    Args:
+        df: Dataframe with N rows and with a 'class' column
 
+    Results:
+        np.array of size N
+    """
 
+    array = df['class'].to_numpy().astype(int)
+    return array
