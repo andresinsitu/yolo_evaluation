@@ -46,16 +46,15 @@ def match_predictions(pred_classes, true_classes, iou):
 
     correct = np.zeros((pred_classes.shape[0], iout.shape[0])).astype(bool)
     correct_class = true_classes[:, None] == pred_classes
-    for i, iout in enumerate(iout):
-    #   x = torch.nonzero(iou.ge(iout) & correct_class)  # IoU > threshold and classes match
-        x = np.nonzero(np.greater_equal(iou,iout) & correct_class)  # coordinates(in the arrays) of elements with IoU > threshold and classes match
-        x = np.transpose(x) #TODO quizás no funciona porque me salto el convertirlo a array, pero parece que furrula asi
-        if x.shape[0]: #x.shape[0]: if there is any non-zero
-            # Concatenate [label, detect, iou]
-            #matches = torch.cat((x, iou[x[:, 0], x[:, 1]].unsqueeze(1)), 1).cpu().numpy()
-            matches = np.concatenate((x, np.expand_dims(iou[x[:,0],x[:,1]],1)),1)
-            if x.shape[0] > 1:
-                matches = matches[matches[:, 2].argsort()[::-1]]
+    iou = iou * correct_class
+
+    for i, threshold in enumerate(iout):
+        matches = np.nonzero(iou >= threshold)  # IoU >= threshold and classes match
+        matches = np.array(matches).T
+
+        if matches.shape[0]:
+            if matches.shape[0] > 1:
+                matches = matches[iou[matches[:, 0], matches[:, 1]].argsort()[::-1]]
                 matches = matches[np.unique(matches[:, 1], return_index=True)[1]]
                 # matches = matches[matches[:, 2].argsort()[::-1]]
                 matches = matches[np.unique(matches[:, 0], return_index=True)[1]]
