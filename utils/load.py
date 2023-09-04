@@ -149,3 +149,17 @@ def get_class_indices(df):
 
     array = df['class'].to_numpy().astype(int)
     return array
+
+def get_confidence(df):
+    """
+    Get confidence vector from predictions df
+    
+    Args:
+        df: Dataframe with N rows and with a 'class' column
+
+    Results:
+        np.array of size N(rows of dataframe)
+    """
+
+    array = df['conf'].to_numpy().astype(int)
+    return array
