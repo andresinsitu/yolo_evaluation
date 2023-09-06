@@ -5,7 +5,7 @@
 - $P$ curve
 - $R$ curve
 - $F1$ score
-- $mAP_{50}$
+- $mAP_{0.5}$
 - Confusion matrix
 
 ## Label format
@@ -19,6 +19,15 @@ For ground of truth:
 `<class> <x_center> <y_center> <width> <height> ` 
 
 Also the values are normalized 
+
+## How to:
+Execute main script with following arguments:
+- --img_path : image folder path
+- --gt_path : ground of truth labels folder path
+- --pred_path : prediction labels folder path
+- --out_path :  path where the curves will be saved
+
+python main.py --img_path --gt_path --pred_path --out_path 
 
 
 
