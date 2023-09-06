@@ -9,7 +9,6 @@
 - Confusion matrix
 
 ## Label format
-
 Usual YOLOv5-8 label format. 
 
 For predictions: 
