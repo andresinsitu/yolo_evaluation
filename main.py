@@ -2,6 +2,7 @@ from utils.load import *
 from utils.ops import *
 from utils.metrics import *
 
+from pathlib import Path
 import argparse
 
 
@@ -18,6 +19,9 @@ def main(paths):
     pred_classes, true_classes = get_class_indices(pred_df), get_class_indices(gt_df) # Get arrays of classes
     correct_array = match_predictions(pred_classes, true_classes, iou) # Get array of correct predictions 
     conf = get_confidence(pred_df) # Get confidence array
+
+    Path(out_path).mkdir(parents=True, exist_ok=True) # Create directory and parents if it doesnt exist
+
     ap_per_class(correct_array, # Calculate the metrics
         conf,
         pred_classes,
