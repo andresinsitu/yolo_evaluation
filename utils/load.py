@@ -161,5 +161,5 @@ def get_confidence(df):
         np.array of size N(rows of dataframe)
     """
 
-    array = df['conf'].to_numpy().astype(int)
+    array = df['conf'].to_numpy()
     return array

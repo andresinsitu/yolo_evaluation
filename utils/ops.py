@@ -36,7 +36,7 @@ def match_predictions(pred_classes, true_classes, iou):
     Args:
         pred_classes (np.array): Predicted class indices of shape(N,).
         true_classes (np.array): Target class indices of shape(M,).
-        iou (np.array): An NxM array containing the pairwise IoU values for predictions and ground of truth
+        iou (np.array): An MxN array containing the pairwise IoU values for predictions and ground of truth
 
     Returns:
         (np.array): Correct array of shape(N,10) for 10 IoU thresholds.
