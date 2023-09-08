@@ -1,5 +1,7 @@
 # Project to evaluate and get metrics from yolo format
 
+Calculate metrics in YOLO format without having to convert labels to COCO first
+
 ## Metrics implemented
 - $PR$ curve
 - $P$ curve
