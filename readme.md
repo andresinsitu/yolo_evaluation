@@ -1,11 +1,12 @@
 # Project to evaluate and get metrics from yolo format
 
-## Metrics to implement
+## Metrics implemented
 - $PR$ curve
 - $P$ curve
 - $R$ curve
 - $F1$ score
 - $mAP_{0.5}$
+## Metrics to implement
 - Confusion matrix
 
 ## Label format
