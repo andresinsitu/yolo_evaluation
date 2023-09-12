@@ -23,6 +23,9 @@ For ground of truth:
 Also the values are normalized 
 
 ## How to:
+
+Install requirements.txt 
+
 Execute main script with following arguments:
 - --img_path : image folder path
 - --gt_path : ground of truth labels folder path
