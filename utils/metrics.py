@@ -2,6 +2,7 @@ import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
 from utils import plt_settings
+import csv
 
 
 def smooth(y, f=0.05):
@@ -101,6 +102,9 @@ def ap_per_class(correct_p,
     unique_classes, nt = np.unique(gt_cls, return_counts=True)
     nc = unique_classes.shape[0]  # number of classes, number of detections
 
+    precision_total=[] #save total precision per class
+    recall_total = [] #save total recall per class
+
     # Create Precision-Recall curve and compute AP for each class
     px, py = np.linspace(0, 1, 1000), []  # for plotting
     ap, p, r = np.zeros((nc, correct_p.shape[1])), np.zeros((nc, 1000)), np.zeros((nc, 1000))
@@ -114,14 +118,16 @@ def ap_per_class(correct_p,
         # Accumulate FPs and TPs
         fpc = (1 - correct_p[i]).cumsum(0)
         tpc = correct_p[i].cumsum(0)
-    
+
         # Recall
         recall = tpc / (n_l + eps)  # recall curve
         r[ci] = np.interp(-px, -conf[i], recall[:, 0], left=0)  # negative x, xp because xp decreases
+        recall_total.append(round(recall[-1,1],2))
 
         # Precision
         precision = tpc / (tpc + fpc)  # precision curve
         p[ci] = np.interp(-px, -conf[i], precision[:, 0], left=1)  # p at pr_score
+        precision_total.append(round(precision[-1,1],2))
 
         # AP from recall-precision curve
         for j in range(correct_p.shape[1]):
@@ -129,12 +135,33 @@ def ap_per_class(correct_p,
             if plot and j == 0:
                 py.append(np.interp(px, mrec, mpre))  # precision at mAP@0.5
 
+
+    names = [str(k) for k in unique_classes]  # list: only classes that have data
+    names = dict(enumerate(names))  # to dict
+
+    #save csv with precision and recall per class
+    rows=[]
+    fields = ['Clase', 'Precision','Recall']
+
+    for ci,c in enumerate(unique_classes):
+        row = [names[ci],precision_total[ci],recall_total[ci]]
+        rows.append(row)
+
+    with open(save_dir+'/'+'metricas.csv', 'w',newline='') as f:
+        # using csv.writer method from CSV package
+        write = csv.writer(f)
+        write.writerow(fields)
+        write.writerows(rows)
+
+
+
+
     # Compute F1 (harmonic mean of precision and recall)
     f1 = 2 * p * r / (p + r + eps)
 
     # names = [v for k, v in names.items() if k in unique_classes]  # list: only classes that have data
-    names = [str(k) for k in unique_classes]  # list: only classes that have data
-    names = dict(enumerate(names))  # to dict
+    #names = [str(k) for k in unique_classes]  # list: only classes that have data
+    #names = dict(enumerate(names))  # to dict
     if plot:
         plot_pr_curve(px, py, ap, save_dir +'/'+ f'{prefix}PR_curve.png', names, on_plot=on_plot)
         plot_mc_curve(px, f1, save_dir +'/'+ f'{prefix}F1_curve.png', names, ylabel='F1', on_plot=on_plot)
